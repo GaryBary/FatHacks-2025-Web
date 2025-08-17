@@ -1,4 +1,5 @@
 // Chatbot
+window.CHAT_API_URL = window.CHAT_API_URL || 'YOUR_API';
 (function initChat() {
   const fab = document.getElementById('chatFab');
   const chat = document.getElementById('chatWidget');
