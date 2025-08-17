@@ -576,3 +576,5 @@ h3 {
   opacity: 1;
   transform: translateY(0);
 }
+/* Force content visible (no fade-in) */
+.reveal { opacity: 1 !important; transform: none !important; }
