@@ -56,14 +56,17 @@ app.post('/api/chat', async (req, res) => {
 
     const reply = completion.choices?.[0]?.message?.content?.trim() || 'I’ve lost my marbles — try again?';
     return res.json({ reply });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: 'Chat failed' });
-  }
+ } catch (err) {
+  console.error('LLM error:', err?.response?.data || err?.message || err);
+  return res
+    .status(500)
+    .json({ error: 'Chat failed', detail: err?.response?.data || err?.message || String(err) });
+}
 });
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
+
 
 
