@@ -63,10 +63,28 @@ app.post('/api/chat', async (req, res) => {
     .json({ error: 'Chat failed', detail: err?.response?.data || err?.message || String(err) });
 }
 });
-
+// Simple test endpoint to show exact LLM error/reply
+app.get('/api/test', async (_req, res) => {
+  try {
+    if (!openai) return res.status(500).json({ ok: false, error: 'Missing OPENAI_API_KEY' });
+    const completion = await openai.chat.completions.create({
+      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+      messages: [{ role: 'user', content: 'Say "pong" and nothing else.' }]
+    });
+    const reply = completion.choices?.[0]?.message?.content || '';
+    return res.json({ ok: true, reply });
+  } catch (err) {
+    return res.status(500).json({
+      ok: false,
+      error: err?.message || 'error',
+      detail: err?.response?.data || String(err)
+    });
+  }
+});
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
+
 
 
 
